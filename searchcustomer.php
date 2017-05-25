@@ -70,8 +70,8 @@ if (!empty($_POST)) {
             $row_array['nic'] = $row1[0];
             $row_array['name'] = $row1[1];
             $row_array['address'] = $row1[2];
-            $row_array['birthday'] = $row1[3];
-            $row_array['mobile'] = $row1[4];
+            $row_array['birthday'] = explode(' ', $row1[3])[0];
+            $row_array['mobile'] = "0".$row1[4];
             $row_array['officer_id'] = $row1[5];
             $row_array['officer_name'] = $officer_name;
             array_push($customerList,$row_array);
