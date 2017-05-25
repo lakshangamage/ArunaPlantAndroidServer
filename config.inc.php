@@ -5,13 +5,13 @@
 
     $host = "localhost";
 
-    $dbname = "arunapl1_webapp";    
+    $dbname = "adfdaf";
     //$dbname = "arunaplant";    
 
-    $username = "arunapl1_user";
+    $username = "afadfad";
     //$username = "root";
 
-    $password = "arunaPLANT@123";
+    $password = "afdafadf";
     //$password = "egodage100";
 
     
