@@ -39,12 +39,18 @@ if (!empty($_POST)) {
         } else {
             //manager
             list($region, $area, $uid) = explode("/", $officer_id);
-            $query = " 
-            SELECT * 
-            FROM customer 
-            WHERE customer.officer_id LIKE '%".$area."%'
-            ";
-            $query_params = array(':area_id' => $area);
+            if ($area == 'admin'){
+                $query = " 
+                    SELECT * 
+                    FROM customer";
+            }else {
+                $query = " 
+                    SELECT * 
+                    FROM customer 
+                    WHERE customer.officer_id LIKE '%".$area."%'
+                    ";
+                    $query_params = array(':area_id' => $area);
+            }            
         }
 
         $stmt   = $db->prepare($query);

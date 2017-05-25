@@ -51,7 +51,7 @@ if (!empty($_POST)) {
 
         die(json_encode($response));
     } else {
-        $response["success"] = 0;
+        $response["success"] = 2;
         $response["message"] = "Invalid Credentials!";
         die(json_encode($response));
     }
