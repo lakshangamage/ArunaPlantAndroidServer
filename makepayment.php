@@ -85,7 +85,7 @@ if(!empty($_POST))
     }
     list($date, $time) = explode(" ", $_POST['date']);
     list($region, $area, $uid) = explode("/", $customer_officer);
-    $to      = 'dinethegodage.13@cse.mrt.ac.lk';
+    $to      = 'apnarunaplant@gmail.com';
     $subject = '[INFO] Bill Number:'.$_POST['trans_id'];
     $message = 'Branch: '.$area.
         "\nOfficer: ".$officer_name.' ('.$_POST['officer_id'].')'.
