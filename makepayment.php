@@ -10,13 +10,13 @@ require("config.inc.php");
 
 if(!empty($_POST))
 {
-    if (empty($_POST['nic']) || empty($_POST['date'])|| empty($_POST['trans_id']) || empty($_POST['amount']) || empty($_POST['officer_id'])) {
+    if (empty($_POST['nic']) || empty($_POST['date']) || empty($_POST['trans_id']) || empty($_POST['trans_type']) || empty($_POST['amount']) || empty($_POST['officer_id'])) {
         $response["success"] = 0;
         $response["message"] = "Low Details.";
         die(json_encode($response));
     }
 
-    $query = "INSERT INTO bill (customer_nic,bill_datetime,bill_id,bill_amount, officer_id) VALUES ( :nic, :date, :trans_id, :amount, :officer_id)";
+    $query = "INSERT INTO bill (customer_nic, bill_datetime, bill_id, bill_type, bill_amount, officer_id) VALUES ( :nic, :date, :trans_id, :trans_type, :amount, :officer_id)";
 
     //Again, we need to update our tokens with the actual data:
     $query_params = array(
@@ -24,7 +24,8 @@ if(!empty($_POST))
         ':date' => $_POST['date'],
         ':trans_id' => $_POST['trans_id'],
         ':amount' => $_POST['amount'],
-        ':officer_id' => $_POST['officer_id']
+        ':officer_id' => $_POST['officer_id'],
+        ':trans_type' => $_POST['trans_type']
     );
 
     try {
@@ -85,11 +86,13 @@ if(!empty($_POST))
     }
     list($date, $time) = explode(" ", $_POST['date']);
     list($region, $area, $uid) = explode("/", $customer_officer);
+    //$to      = 'dinethegodage.13@cse.mrt.ac.lk';
     $to      = 'apnarunaplant@gmail.com';
     $subject = '[INFO] Bill Number:'.$_POST['trans_id'];
     $message = 'Branch: '.$area.
         "\nOfficer: ".$officer_name.' ('.$_POST['officer_id'].')'.
         "\nBill Number: ".$_POST['trans_id'].
+        "\nBill Type: ".$billTypeList[$_POST['trans_type']].
         "\nAmount: Rs.".$_POST['amount'].
         "\nDate: ".$date.
         "\nCustomer Name: ".$customer_name.

@@ -3,7 +3,6 @@
 //load and connect to MySQL database stuff
 require("config.inc.php");
 
-
 if (!empty($_POST)) {
     $query = " 
             SELECT * 
@@ -82,15 +81,18 @@ if (!empty($_POST)) {
             $row_array['officer_name'] = $officer_name;
             array_push($customerList,$row_array);
         }
+
+
         if ($hasCustomers) {
             $response["success"] = 1;
             $response["message"] = "Customers Available!";
             $response["customers"] = $customerList;
+            $response["bill_types"] = $billTypeList;
         } else {
             $response["success"] = 1;
             $response["message"] = "Customers not found";
             $response["customers"] = $customerList;
-            die(json_encode($response));
+            $response["bill_types"] = $billTypeList;
         }
 
         die(json_encode($response));

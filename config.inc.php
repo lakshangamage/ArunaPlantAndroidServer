@@ -1,85 +1,90 @@
 <?php
-    error_reporting(E_ALL);
-    ini_set("display_errors", 1);
-    //header('Content-Type: text/html; charset=utf-8');
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+//header('Content-Type: text/html; charset=utf-8');
 
-    $host = "localhost";
+$host = "gdfgd";
 
-    $dbname = "adfdaf";
-    //$dbname = "arunaplant";    
+$dbname = "gdfgdfg";
+//$dbname = "arunaplant";
 
-    $username = "afadfad";
-    //$username = "root";
+$username = "dfgd";
+//$username = "root";
 
-    $password = "afdafadf";
-    //$password = "egodage100";
+$password = "dggdfgdfgdfg";
+//$password = "egodage100";
 
-    
-    $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');
 
-    try
+$options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');
+
+try
+
+{
+
+    $db = new PDO("mysql:host={$host};dbname={$dbname};charset=utf8", $username, $password, $options);
+
+}
+
+catch(PDOException $ex)
+
+{
+
+    die("Failed to connect to the database: " . $ex->getMessage());
+
+}
+
+$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+
+if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc())
+
+{
+
+    function undo_magic_quotes_gpc(&$array)
 
     {
 
-        $db = new PDO("mysql:host={$host};dbname={$dbname};charset=utf8", $username, $password, $options);
-
-    }
-
-    catch(PDOException $ex)
-
-    {
-
-        die("Failed to connect to the database: " . $ex->getMessage());
-
-    }
-   
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-
- 
-    if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc())
-
-    {
-
-        function undo_magic_quotes_gpc(&$array)
+        foreach($array as &$value)
 
         {
 
-            foreach($array as &$value)
+            if(is_array($value))
 
             {
 
-                if(is_array($value))
+                undo_magic_quotes_gpc($value);
 
-                {
+            }
 
-                    undo_magic_quotes_gpc($value);
+            else
 
-                }
+            {
 
-                else
-
-                {
-
-                  $value = stripslashes($value);
-
-                }
+                $value = stripslashes($value);
 
             }
 
         }
 
-      
-
-        undo_magic_quotes_gpc($_POST);
-
-        undo_magic_quotes_gpc($_GET);
-
-        undo_magic_quotes_gpc($_COOKIE);
-
     }
 
-    
+
+
+    undo_magic_quotes_gpc($_POST);
+
+    undo_magic_quotes_gpc($_GET);
+
+    undo_magic_quotes_gpc($_COOKIE);
+
+}
+
+
+$billTypeList = array();
+array_push($billTypeList,"Advance");
+array_push($billTypeList,"Final");
+array_push($billTypeList,"A.I.P.");
+
 
 ?>
