@@ -3,15 +3,15 @@ error_reporting(E_ALL);
 ini_set("display_errors", 1);
 //header('Content-Type: text/html; charset=utf-8');
 
-$host = "gdfgd";
+$host = "yjfgh";
 
-$dbname = "gdfgdfg";
+$dbname = "dgghdfgh";
 //$dbname = "arunaplant";
 
-$username = "dfgd";
+$username = "jrthy";
 //$username = "root";
 
-$password = "dggdfgdfgdfg";
+$password = "wffdsgfgv";
 //$password = "egodage100";
 
 
@@ -86,5 +86,5 @@ array_push($billTypeList,"Advance");
 array_push($billTypeList,"Final");
 array_push($billTypeList,"A.I.P.");
 
-
+$version = 4;
 ?>

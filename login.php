@@ -5,6 +5,11 @@ require("config.inc.php");
 
 if (!empty($_POST)) {
     //gets user's info based off of a username.
+    if($version > $_POST['version']){
+            $response["success"] = 3;
+            $response["message"] = "New version available!";
+            die(json_encode($response));
+    }
     $query = " 
             SELECT 
                *
