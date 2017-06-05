@@ -10,14 +10,13 @@ require("config.inc.php");
 
 if(!empty($_POST))
 {
-    if (empty($_POST['nic']) || empty($_POST['date']) || empty($_POST['trans_id']) || empty($_POST['trans_type']) || empty($_POST['amount']) || empty($_POST['officer_id'])) {
+    if (empty($_POST['nic']) || empty($_POST['date']) || empty($_POST['trans_id']) || !isset($_POST['trans_type']) || empty($_POST['amount']) || empty($_POST['officer_id'])) {
         $response["success"] = 0;
         $response["message"] = "Low Details.";
         die(json_encode($response));
     }
 
     $query = "INSERT INTO bill (customer_nic, bill_datetime, bill_id, bill_type, bill_amount, officer_id) VALUES ( :nic, :date, :trans_id, :trans_type, :amount, :officer_id)";
-
     //Again, we need to update our tokens with the actual data:
     $query_params = array(
         ':nic' => $_POST['nic'],
@@ -30,7 +29,7 @@ if(!empty($_POST))
 
     try {
         $stmt   = $db->prepare($query);
-        $result = $stmt->execute($query_params);
+        $result	= $stmt->execute($query_params);
     }
     catch (PDOException $ex) {
         $response["success"] = 0;
@@ -61,8 +60,8 @@ if(!empty($_POST))
 
     $query = " 
             SELECT * 
-            FROM customer 
-            WHERE customer.customer_nic = :nic 
+            FROM customer NATURAL JOIN officer
+            WHERE customer.customer_nic = :nic AND customer.officer_id = officer.officer_id
             ";
     $query_params = array(':nic' => $_POST['nic']);
     try {
@@ -78,11 +77,13 @@ if(!empty($_POST))
     $customer_name = 'Not Found';
     $customer_mobile = '';
     $customer_officer = '';
+    $customer_officer_name = '';
 
     if ($row) {
         $customer_name = $row['customer_name'];
         $customer_mobile = $row['customer_mobile'];
         $customer_officer = $row['officer_id'];
+        $customer_officer_name = $row['officer_name'];
     }
     list($date, $time) = explode(" ", $_POST['date']);
     list($region, $area, $uid) = explode("/", $customer_officer);
@@ -90,13 +91,14 @@ if(!empty($_POST))
     $to      = 'apnarunaplant@gmail.com';
     $subject = '[INFO] Bill Number:'.$_POST['trans_id'];
     $message = 'Branch: '.$area.
-        "\nOfficer: ".$officer_name.' ('.$_POST['officer_id'].')'.
+        "\nBilled Officer: ".$officer_name.' ('.$_POST['officer_id'].')'.
         "\nBill Number: ".$_POST['trans_id'].
         "\nBill Type: ".$billTypeList[$_POST['trans_type']].
         "\nAmount: Rs.".$_POST['amount'].
         "\nDate: ".$date.
         "\nCustomer Name: ".$customer_name.
-        "\nCustomer NIC: ".$_POST['nic'];
+        "\nCustomer NIC: ".$_POST['nic'].
+        "\nCustomer Officer: ".$customer_officer_name.' ('.$customer_officer.')';
 
     $headers = 'From: webapp@arunaplant.com' . "\r\n" .
         'Reply-To: webapp@arunaplant.com' . "\r\n" .
